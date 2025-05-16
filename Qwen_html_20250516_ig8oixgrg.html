@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPunit - Автоматизация ценообразования для маркетплейсов</title>
+  <meta name="description" content="Автоматический расчет цен на маркетплейсах с учетом всех расходов и комиссий. Получайте точные цены и стабильную прибыль с MPunit">
+  <meta name="keywords" content="автоматизация ценообразования, маркетплейсы, автоматизация продаж, WB, Озон, Яндекс.Маркет">
+  <meta name="author" content="WESMA Digital Agency">
+  <meta name="theme-color" content="#4F46E5">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="MPunit - Автоматизация ценообразования для маркетплейсов">
+  <meta property="og:description" content="Автоматический расчет цен на WB, Озон и Яндекс.Маркет с гарантией вашей прибыли">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpunit.ru ">
+  <meta property="og:image" content="https://placehold.co/600x400/3730a3/FFFFFF?text=MPunit ">
+  <meta property="og:site_name" content="MPunit">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MPunit - Автоматизация ценообразования для маркетплейсов">
+  <meta name="twitter:description" content="Автоматический расчет цен на WB, Озон и Яндекс.Маркет с гарантией вашей прибыли">
+  <meta name="twitter:image" content="https://placehold.co/600x400/3730a3/FFFFFF?text=MPunit ">
+  <meta name="twitter:site" content="@wesma_agency">
+  
+  <link rel="canonical" href="https://mpunit.ru ">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #6366F1;
+      --primary-dark: #3730A3;
+      --accent: #34D399;
+      --accent-dark: #10B981;
+      --background: #F9FAFB;
+      --white: #FFFFFF;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      --black: #000000;
+      --white: #FFFFFF;
+      --red: #EF4444;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: var(--gray-700);
+      background-color: var(--background);
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1rem 0;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo svg {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--primary);
+    }
+    
+    .nav {
+      display: none;
+    }
+    
+    .nav ul {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav a {
+      color: var(--gray-600);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav a:hover {
+      color: var(--primary);
+    }
+    
+    .auth-button {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .auth-button:hover {
+      transform: scale(1.05);
+    }
+    
+    .hero {
+      background: linear-gradient(to right, #EEF2FF, #DBEAFE);
+      padding: 4rem 0;
+    }
+    
+    .hero-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      margin: 1rem 0 2rem;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-buttons button {
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .cta-primary {
+      background-color: var(--primary);
+      color: #fff;
+    }
+    
+    .cta-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .cta-secondary {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .cta-secondary:hover {
+      background-color: var(--primary);
+      color: #fff;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      color: var(--gray-500);
+    }
+    
+    .video-wrapper {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background-color: #E5E7EB;
+      border-radius: 1rem;
+      overflow: hidden;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .video-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .video-time {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      background-color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .video-time .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: red;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      display: inline-block;
+    }
+    
+    section {
+      padding: 4rem 0;
+    }
+    
+    section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    section h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .for-whom {
+      background-color: var(--gray-50);
+    }
+    
+    .for-whom .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .for-whom-card {
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s;
+    }
+    
+    .for-whom-card:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .for-whom-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .for-whom-card p {
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--gray-500);
+      margin: 0.5rem 0;
+    }
+    
+    .for-whom-card span {
+      font-size: 0.875rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .how-it-works {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    
+    .step {
+      position: relative;
+      background-color: var(--gray-50);
+      padding: 2rem;
+      border-radius: 1rem;
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -1.5rem;
+      left: -1.5rem;
+      width: 3rem;
+      height: 3rem;
+      background-color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--primary);
+      border-radius: 9999px;
+    }
+    
+    .interface-section {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .interface-slider {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .interface-images {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .interface-images img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+    
+    .slider-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .slider-control {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 9999px;
+      background-color: var(--gray-300);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .slider-control.active {
+      width: 2rem;
+      background-color: var(--primary);
+    }
+    
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .slider-prev {
+      left: 0;
+    }
+    
+    .slider-next {
+      right: 0;
+    }
+    
+    .interface-info {
+      margin-top: 2rem;
+    }
+    
+    .interface-info ul {
+      list-style: none;
+      margin: 1rem 0;
+    }
+    
+    .interface-info li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .interface-info li::before {
+      content: '✓';
+      color: var(--accent);
+      margin-right: 0.75rem;
+      font-size: 1.25rem;
+    }
+    
+    .interface-hint {
+      background-color: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.25rem;
+      margin-top: 2rem;
+    }
+    
+    .interface-hint p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--primary-dark);
+    }
+    
+    .why-us {
+      background-color: var(--primary);
+      color: #fff;
+    }
+    
+    .why-us .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .why-us-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .why-us-card h3 {
+      color: #fff;
+    }
+    
+    .why-us-card p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .testimonials {
+      background-color: var(--gray-50);
+    }
+    
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .testimonial {
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .testimonial-image {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 9999px;
+      margin-right: 1rem;
+    }
+    
+    .testimonial-name {
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+    
+    .testimonial-quote {
+      font-size: 0.875rem;
+      color: var(--primary);
+    }
+    
+    .testimonial-text {
+      font-size: 0.95rem;
+      color: var(--gray-600);
+    }
+    
+    .pricing {
+      padding: 4rem 0;
+    }
+    
+    .pricing-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .pricing-subtitle {
+      text-align: center;
+      font-size: 1.125rem;
+      color: var(--gray-500);
+      margin-bottom: 2rem;
+    }
+    
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .pricing-card {
+      background-color: #fff;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    
+    .pricing-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .pricing-card.featured {
+      border: 2px solid var(--primary);
+    }
+    
+    .pricing-card.featured .plan-badge {
+      background-color: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      text-align: center;
+    }
+    
+    .pricing-card-body {
+      padding: 1.5rem;
+    }
+    
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .plan-description {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+    
+    .plan-price {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 1.5rem 0 0.75rem;
+    }
+    
+    .plan-ideal {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+    }
+    
+    .plan-button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-300);
+      background-color: var(--gray-100);
+      color: var(--gray-700);
+      margin-top: 1rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .plan-button:hover {
+      transform: scale(1.05);
+    }
+    
+    .plan-button.featured {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+    }
+    
+    .faq {
+      padding: 4rem 0;
+    }
+    
+    .faq-item {
+      border-bottom: 1px solid var(--gray-200);
+      padding: 1.5rem 0;
+    }
+    
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.125rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .faq-answer {
+      margin-top: 1rem;
+      color: var(--gray-600);
+      display: none;
+    }
+    
+    .faq-answer.open {
+      display: block;
+    }
+    
+    .faq-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: transform 0.3s;
+    }
+    
+    .faq-icon.open {
+      transform: rotate(180deg);
+    }
+    
+    .cta {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 4rem 0;
+    }
+    
+    .cta-content {
+      text-align: center;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .footer {
+      background-color: var(--gray-900);
+      color: var(--gray-300);
+      padding: 3rem 0;
+    }
+    
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-logo svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: var(--primary);
+      margin-right: 0.5rem;
+    }
+    
+    .footer-links {
+      margin-bottom: 1.5rem;
+    }
+    
+    .footer-links h3 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--gray-300);
+    }
+    
+    .footer-links a {
+      display: block;
+      color: var(--gray-400);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: #fff;
+    }
+    
+    .footer-contact {
+      color: var(--gray-400);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      margin-top: 2rem;
+      border-top: 1px solid var(--gray-800);
+      padding-top: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--gray-400);
+    }
+    
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background-color: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      position: relative;
+      max-width: 500px;
+      width: 100%;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--gray-200);
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--gray-300);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(79, 37, 221, 0.2);
+    }
+    
+    .form-actions {
+      margin-top: 2rem;
+    }
+    
+    .form-actions button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.3s;
+    }
+    
+    .form-login,
+    .form-register {
+      display: none;
+    }
+    
+    .form-login.active,
+    .form-register.active {
+      display: block;
+    }
+    
+    @media (min-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+      
+      .nav {
+        display: block;
+      }
+      
+      .faq {
+        padding: 6rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Модальное окно авторизации -->
+    <div class="modal" :class="{ active: showModal }" @click.self="showModal = false">
+      <div class="modal-content" @click.stop>
+        <button class="close-btn" @click="showModal = false">&times;</button>
+        
+        <!-- Вкладки -->
+        <div class="tabs">
+          <div 
+            v-for="(tab, index) in ['Вход', 'Регистрация']" 
+            :key="index" 
+            class="tab"
+            :class="{ active: activeTab === index }"
+            @click="activeTab = index"
+          >
+            {{ tab }}
+          </div>
+        </div>
+        
+        <!-- Форма входа -->
+        <div v-show="activeTab === 0" class="form-login active">
+          <form @submit.prevent="login">
+            <div class="form-group">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" class="form-control" placeholder="Введите email" required>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Пароль</label>
+              <input type="password" id="login-password" class="form-control" placeholder="Введите пароль" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="auth-button cta-button w-full">Войти</button>
+            </div>
+            <div class="text-center mt-4">
+              <a href="#" class="text-sm text-indigo-600">Забыли пароль?</a>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Форма регистрации -->
+        <div v-show="activeTab === 1" class="form-register active">
+          <form @submit.prevent="register">
+            <div class="form-group">
+              <label for="register-name">ФИО</label>
+              <input type="text" id="register-name" class="form-control" placeholder="Введите ФИО" required>
+            </div>
+            <div class="form-group">
+              <label for="register-email">Email</label>
+              <input type="email" id="register-email" class="form-control" placeholder="Введите email" required>
+            </div>
+            <div class="form-group">
+              <label for="register-password">Пароль</label>
+              <input type="password" id="register-password" class="form-control" placeholder="Создайте пароль" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="auth-button cta-button w-full">Зарегистрироваться</button>
+            </div>
+            <div class="text-center mt-4">
+              <span class="text-sm text-gray-500">Уже есть аккаунт?</span>
+              <button type="button" @click="activeTab = 0" class="text-sm text-indigo-600 ml-1">Войдите</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <header class="header">
+      <div class="header container">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="1.5" stroke-linejoin="1.5"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="1.5" stroke-linejoin="1.5"/>
+          </svg>
+          <span>MPunit</span>
+        </div>
+        
+        <nav class="nav">
+          <ul>
+            <li><a href="#for-whom">Для кого?</a></li>
+            <li><a href="#how-it-works">Как это работает</a></li>
+            <li><a href="#pricing">Тарифы</a></li>
+            <li><a href="#cases">Кейсы</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+          </ul>
+        </nav>
+        
+        <div class="auth">
+          <button @click="showModal = true" class="auth-button">Личный кабинет</button>
+        </div>
+      </div>
+    </header>
+    
+    <main>
+      <!-- Hero секция -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <div>
+              <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">
+                Перестаньте терять деньги на неверных ценах
+              </h1>
+              <p class="text-xl text-gray-600 mb-6">
+                Автоматический расчет цен на WB, Озон и Яндекс.Маркет с гарантией вашей прибыли
+              </p>
+              
+              <div class="hero-buttons">
+                <button @click="showModal = true" class="auth-button cta-primary">Начать бесплатно <span class="ml-2 text-xs">(14 дней, до 50 товаров)</span></button>
+                <button class="auth-button cta-secondary">Посмотреть демо</button>
+              </div>
+              
+              <div class="stats">
+                <div class="stat">
+                  <div class="stat-number">1000+</div>
+                  <div class="stat-label">Продавцов</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">30%</div>
+                  <div class="stat-label">Рост прибыли</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">5</div>
+                  <div class="stat-label">Минут на обновление</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="hero-image">
+              <div class="video-wrapper">
+                <img src="https://placehold.co/800x450/3730a3/FFFFFF?text= Видео-превью" alt="Видео-превью">
+                <div class="video-time">
+                  <span class="dot"></span>
+                  <span>30 секунд</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Для кого -->
+      <section id="for-whom" class="for-whom">
+        <div class="container">
+          <h2 class="text-3xl font-bold text-center mb-16">Эта система для вас, если...</h2>
+          
+          <div class="for-whom-grid">
+            <div v-for="(item, index) in forWhom" :key="index" class="for-whom-card">
+              <div class="flex items-center mb-4">
+                <img :src="item.icon" alt="" class="mr-3">
+                <h3>{{ item.title }}</h3>
+              </div>
+              <p class="italic text-gray-600 mb-3 text-sm">{{ item.pain }}</p>
+              <p class="text-sm text-indigo-600 font-medium">→ {{ item.solution }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Как это работает -->
+      <section id="how-it-works" class="how-it-works">
+        <div class="container">
+          <h2 class="text-3xl font-bold text-center">Как это работает</h2>
+          <p class="text-center text-gray-600 max-w-2xl mx-auto mb-16">Всего 3 простых шага к стабильной прибыли</p>
+          
+          <div class="steps">
+            <div v-for="(step, index) in steps" :key="index" class="step">
+              <div class="step-number">{{ step.number }}</div>
+              <div class="step-content">
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Слайдер интерфейса -->
+          <div class="interface-section mt-16">
+            <h3 class="font-bold text-lg">Ваш рабочий стол</h3>
+            
+            <div class="interface-slider mt-6">
+              <div class="interface-images">
+                <button class="slider-nav slider-prev" @click="prevSlide">&#8592;</button>
+                <img 
+                  :src="interfaceImages[currentSlide]" 
+                  :alt="'Интерфейс MPunit ' + (currentSlide + 1)" 
+                  class="interface-image"
+                >
+                <button class="slider-nav slider-next" @click="nextSlide">&#8594;</button>
+              </div>
+              
+              <div class="slider-controls mt-4">
+                <div 
+                  v-for="(image, index) in interfaceImages" 
+                  :key="index" 
+                  class="slider-control" 
+                  :class="{ active: currentSlide === index }"
+                  @click="currentSlide = index"
+                ></div>
+              </div>
+            </div>
+            
+            <div class="interface-info">
+              <p class="mt-6">В интерфейсе вы увидите все расчеты в двух таблицах:</p>
+              <ul>
+                <li v-for="(item, index) in interfaceFeatures" :key="index">
+                  {{ item }}
+                </li>
+              </ul>
+              
+              <div class="interface-hint">
+                <p class="text-sm">
+                  <strong>Подсказка:</strong> Используйте стрелки для навигации по интерфейсу и увидите, как легко управлять своими товарами!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Почему мы -->
+      <section class="why-us">
+        <div class="container">
+          <h2 class="text-3xl font-bold text-center mb-16">Почему именно MPunit</h2>
+          
+          <div class="why-us-grid">
+            <div v-for="(feature, index) in features" :key="index" class="why-us-card">
+              <h3>{{ feature.title }}</h3>
+              <p class="text-indigo-100">{{ feature.description }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Отзывы -->
+      <section id="cases" class="testimonials">
+        <div class="container">
+          <h2 class="text-3xl font-bold text-center mb-16">Что говорят наши клиенты</h2>
+          
+          <div class="testimonials-grid">
+            <div v-for="(testimonial, index) in testimonials" :key="index" class="testimonial">
+              <div class="testimonial-header">
+                <img :src="testimonial.image" :alt="testimonial.name" class="testimonial-image">
+                <div>
+                  <h3 class="testimonial-name">{{ testimonial.name }}</h3>
+                  <div class="testimonial-quote">{{ testimonial.quote }}</div>
+                </div>
+              </div>
+              <p class="testimonial-text">{{ testimonial.text }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Тарифы -->
+      <section id="pricing" class="pricing">
+        <div class="container">
+          <h2 class="pricing-title">Выберите подходящий тариф</h2>
+          <p class="pricing-subtitle">Все тарифы включают базовые функции. Дополнительный магазин +50% к стоимости тарифа.</p>
+          
+          <div class="pricing-cards">
+            <div v-for="(plan, index) in pricing" :key="index" class="pricing-card" :class="{ 'featured': plan.featured }">
+              <div v-if="plan.featured" class="plan-badge">Популярный выбор</div>
+              <div class="pricing-card-body">
+                <h3 class="plan-name">{{ plan.name }}</h3>
+                <p class="plan-description">{{ plan.description }}</p>
+                <div class="plan-price">{{ plan.price }}</div>
+                <p class="plan-ideal">{{ plan.idealFor }}</p>
+                <button class="plan-button" :class="{ 'featured': plan.featured }">Выбрать тариф</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Часто задаваемые вопросы -->
+      <section id="faq" class="faq">
+        <div class="container">
+          <h2 class="text-3xl font-bold text-center mb-16">Часто задаваемые вопросы</h2>
+          
+          <div class="faq-container">
+            <div 
+              v-for="(faq, index) in faq" 
+              :key="index" 
+              class="faq-item"
+            >
+              <div 
+                class="faq-question" 
+                @click="toggleFAQ(index)"
+                :aria-expanded="activeFAQ === index"
+                :aria-controls="'faq-answer-' + index"
+              >
+                {{ faq.question }}
+                <svg 
+                  class="faq-icon" 
+                  :class="{ 'open': activeFAQ === index }" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              <div 
+                class="faq-answer" 
+                :id="'faq-answer-' + index" 
+                :class="{ open: activeFAQ === index }"
+              >
+                {{ faq.answer }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CTA -->
+      <section class="cta">
+        <div class="container">
+          <div class="cta-content">
+            <h2 class="text-3xl font-bold mb-4">Готовы перестать терять деньги?</h2>
+            <p class="cta-subtitle">
+              Присоединяйтесь к 1000+ продавцам, которые уже увеличили прибыль на 30%
+            </p>
+            
+            <div class="cta-buttons">
+              <button @click="showModal = true" class="auth-button cta-button">Попробовать бесплатно</button>
+              <button class="auth-button cta-button secondary">Задать вопрос менеджеру</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <!-- Подвал -->
+    <footer id="contacts" class="footer">
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-logo">
+            <div class="logo">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>MPunit</span>
+            </div>
+            <p class="footer-description">Автоматизация цен на маркетплейсах с гарантией вашей прибыли</p>
+          </div>
+          
+          <div class="footer-links">
+            <h3 class="footer-title">Продукт</h3>
+            <ul class="footer-list">
+              <li><a href="#how-it-works">Как это работает</a></li>
+              <li><a href="#pricing">Тарифы</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links">
+            <h3 class="footer-title">Компания</h3>
+            <ul class="footer-list">
+              <li><a href="#cases">Кейсы</a></li>
+              <li><a href="#">О нас</a></li>
+              <li><a href="#contacts">Контакты</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-contact">
+            <h3 class="footer-title">Контакты</h3>
+            <ul class="footer-contact-list">
+              <li>manager@wesma.ru</li>
+              <li>+7 (495) 118-24-74</li>
+              <li>Telegram: @mpunit_bot</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2023 MPunit. Все права защищены.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Подключение Vue -->
+  <script src="https://unpkg.com/vue @3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp } = Vue;
+    
+    createApp({
+      data() {
+        return {
+          showModal: false,
+          activeTab: 0,
+          currentSlide: 0,
+          activeFAQ: null,
+          forWhom: [
+            {
+              title: "Малые и средние продавцы",
+              icon: "https://placehold.co/40x40 ",
+              pain: "Путаетесь в расчетах, теряете деньги на неверных ценах",
+              solution: "Точный расчет себестоимости, автоматизация всех процессов"
+            },
+            {
+              title: "Крупные продавцы",
+              icon: "https://placehold.co/40x40 ",
+              pain: "Не успеваете следить за 1000+ товаров",
+              solution: "Мгновенная синхронизация с 1С, массовое обновление цен"
+            },
+            {
+              title: "Начинающие предприниматели",
+              icon: "https://placehold.co/40x40 ",
+              pain: "Боитесь начать продавать из-за страха потерять деньги",
+              solution: "Тестовый период, интуитивный интерфейс, обучающие материалы"
+            },
+            {
+              title: "Фрилансеры/агентства",
+              icon: "https://placehold.co/40x40 ",
+              pain: "Управление множеством магазинов клиентов",
+              solution: "Мультиаккаунт, интеграция с Trello/Notion, шаблоны workflow"
+            }
+          ],
+          steps: [
+            {
+              number: "01",
+              title: "Загрузите данные",
+              description: "Выберите товары из Excel, 1С или фида — загрузка за 5 минут"
+            },
+            {
+              number: "02",
+              title: "Настройте прибыль",
+              description: "Укажите, сколько хотите зарабатывать: 20% с бренда или 50₽ с товара"
+            },
+            {
+              number: "03",
+              title: "Готово!",
+              description: "Цены обновятся на маркетплейсах — вы получите отчет в личном кабинете"
+            }
+          ],
+          interfaceImages: [
+            "https://placehold.co/800x450/3730a3/FFFFFF?text= Интерфейс+1",
+            "https://placehold.co/800x450/3730a3/FFFFFF?text= Интерфейс+2",
+            "https://placehold.co/800x450/3730a3/FFFFFF?text= Интерфейс+3"
+          ],
+          interfaceFeatures: [
+            "Таблица с расчетами по каждому товару",
+            "Таблица с заказами и экономикой по ним",
+            "План: раздел статистики и отчетности по чистой прибыли"
+          ],
+          features: [
+            {
+              title: "Точный расчет себестоимости",
+              description: "Учитываем все комиссии маркетплейсов, ваши дополнительные расходы и налоги"
+            },
+            {
+              title: "Реальное время",
+              description: "Цены обновляются мгновенно через API маркетплейсов"
+            },
+            {
+              title: "Масштабирование",
+              description: "Работаем с 10 до 10 000+ товаров без потерь данных"
+            },
+            {
+              title: "Гибкость",
+              description: "Настройка прибыли по брендам, категориям или каждому товару"
+            },
+            {
+              title: "Интеграции",
+              description: "Поддержка Excel, 1С, фидов и API для интеграции с вашими системами"
+            },
+            {
+              title: "Будущее",
+              description: "Планы по внедрению AI/ML для прогнозирования оптимальных цен"
+            }
+          ],
+          testimonials: [
+            {
+              name: "Магазин детских товаров",
+              quote: "+45% прибыли после подключения к MPunit",
+              image: "https://placehold.co/100x100 "
+            },
+            {
+              name: "Оптовый поставщик",
+              quote: "Автоматизировал 2000 SKU за день",
+              image: "https://placehold.co/100x100 "
+            }
+          ],
+          pricing: [
+            {
+              name: "Старт",
+              description: "1 магазин, до 100 товаров",
+              price: "2500₽/мес",
+              idealFor: "Идеально для новичков"
+            },
+            {
+              name: "Профи",
+              description: "1 магазин, до 1000 товаров",
+              price: "4900₽/мес",
+              idealFor: "Для растущего бизнеса",
+              featured: true
+            },
+            {
+              name: "Бизнес",
+              description: "1 магазин, безлимит товаров",
+              price: "9750₽/мес",
+              idealFor: "Для крупных игроков"
+            }
+          ],
+          faq: [
+            {
+              question: "Как быстро я начну зарабатывать?",
+              answer: "С первого дня — цены обновляются мгновенно"
+            },
+            {
+              question: "Что если у меня нет 1С?",
+              answer: "Работайте с Excel или фидами — это бесплатно"
+            },
+            {
+              question: "А если я передумаю?",
+              answer: "Возврат денег в течение 7 дней"
+            }
+          ]
+        };
+      },
+      methods: {
+        nextSlide() {
+          this.currentSlide = (this.currentSlide + 1) % this.interfaceImages.length;
+        },
+        prevSlide() {
+          this.currentSlide = (this.currentSlide - 1 + this.interfaceImages.length) % this.interfaceImages.length;
+        },
+        toggleFAQ(index) {
+          this.activeFAQ = this.activeFAQ === index ? null : index;
+        }
+      },
+      mounted() {
+        // Автоматическое переключение слайдов
+        this.sliderInterval = setInterval(() => {
+          this.nextSlide();
+        }, 5000);
+      },
+      beforeUnmount() {
+        clearInterval(this.sliderInterval);
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
